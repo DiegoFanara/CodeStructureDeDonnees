@@ -3,6 +3,7 @@ package mv.sdd;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,8 +39,45 @@ class SeriePooTest {
     }
 
     @Test
-    @DisplayName("Rejette le calule pour un montant négatif")
+    @Tag("Calculer Montant")
+    @DisplayName("Rejette le calcule pour un montant négatif")
     void claculerTaxesVenteMontantNegatif(){
         assertThrows(IllegalArgumentException.class, ()-> SeriePOO.claculerTaxesVente(-100, false, false));
     }
+
+    @Test
+    @DisplayName("Losque le montant est null ou == 0")
+    void calculerTaxeVenteMontantNull(){
+        double resultat = SeriePOO.claculerTaxesVente(0, false, false);
+        assertEquals(0, resultat);
+    }
+
+    @Test
+    @DisplayName("Lorsque le montant = 100 et F, F")
+    void calculerTaxeVenteMontantFF(){
+        double resultat = SeriePOO.claculerTaxesVente(100, false, false);
+        assertEquals(100, resultat);
+    }
+
+    @Test
+    @DisplayName("Lorsque le montant = 100 et F, T")
+    void calculerTaxeVenteMontantFT(){
+        double resultat = SeriePOO.claculerTaxesVente(100, false, true);
+        assertEquals(105, resultat, 0.1);
+    }
+
+    @Test
+    @DisplayName("Lorsque le montant = 100 et T, F")
+    void calculerTaxeVenteMontantTF(){
+        double resultat = SeriePOO.claculerTaxesVente(100, true, false);
+        assertEquals(109.97, resultat, 0.1);
+    }
+
+    @Test
+    @DisplayName("Lorsque le montant = 100 T, T")
+    void calculerTaxeVenteMontantTT(){
+        double resultat = SeriePOO.claculerTaxesVente(100, true, true);
+        assertEquals(114.97, resultat, 0.1);
+    }
+
 }
